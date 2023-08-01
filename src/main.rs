@@ -109,7 +109,10 @@ fn main() {
 
             // gl::ClearColor(0.1, 0.3, 0.5, 1.0);
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-            gl::Clear(gl::DEPTH_TEST);
+            // gl::Clear(gl::DEPTH_TEST);
+            gl::Enable(gl::DEPTH_TEST);
+            gl::Enable(gl::BLEND);
+            gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
         }
 
         // user inputs

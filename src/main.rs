@@ -1,6 +1,8 @@
 extern crate gl;
 extern crate glfw;
 
+mod engine;
+
 use glfw::{Action, Context, Key};
 
 fn main() {

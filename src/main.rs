@@ -41,8 +41,8 @@ fn main() {
     let monitor = glfw::Monitor::from_primary();
     let mode = glfw::Monitor::get_video_mode(&monitor).unwrap();
 
-    let win_center_x = (mode.width / 2) - 150;
-    let win_center_y = (mode.height / 2) - 150;
+    let win_center_x = (mode.width / 2) - (WINDOW_WIDTH / 2);
+    let win_center_y = (mode.height / 2) - (WINDOW_HEIGHT / 2);
 
     window.set_pos((win_center_x) as i32, (win_center_y) as i32);
 

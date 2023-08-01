@@ -1,5 +1,6 @@
 extern crate gl;
 extern crate glfw;
+extern crate image;
 
 mod engine;
 
@@ -61,7 +62,7 @@ fn main() {
         0.5, 0.5, 0.0, 0.5, -0.5, 0.0, -0.5, -0.5, 0.0, -0.5, 0.5, 0.0,
     ];
     let indices = vec![0, 1, 3, 1, 2, 3];
-    let texture_coord = vec![0.0, 0.5, 0.0, 1.0, 1.0, 0.0];
+    let texture_coord: Vec<f32> = vec![1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0];
 
     default_buffer.bind_vao();
 
@@ -79,7 +80,27 @@ fn main() {
         gl::STATIC_DRAW,
     );
 
-    // @TODO: texture
+    default_buffer.bind_tbo();
+    default_buffer.tbo_data(
+        (texture_coord.len() * std::mem::size_of::<f32>()) as isize,
+        texture_coord.as_ptr() as *const c_void,
+        gl::STATIC_DRAW,
+    );
+
+    let mut default_crosshair = image::open("assets/face.png").unwrap();
+    default_crosshair = default_crosshair.flipv();
+
+    default_texture.bind();
+    default_texture.setup_2d();
+    default_texture.tex_image2d(
+        default_crosshair.width() as i32,
+        default_crosshair.height() as i32,
+        default_crosshair.into_bytes().as_ptr() as *const c_void,
+    );
+
+    unsafe {
+        gl::Uniform1i(default_shader.get_uniform_loc_from_name("ourTexture"), 0);
+    }
 
     while !window.should_close() {
         // OpenGL set ups
@@ -97,6 +118,10 @@ fn main() {
         }
 
         // Changes and Updates
+        unsafe {
+            gl::ActiveTexture(gl::TEXTURE0);
+        }
+        default_texture.bind();
 
         // OpenGL Render
         unsafe {

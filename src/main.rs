@@ -17,6 +17,9 @@ fn main() {
     glfw.window_hint(glfw::WindowHint::TransparentFramebuffer(true));
     glfw.window_hint(glfw::WindowHint::Decorated(false));
 
+    // This puts our windows always on top
+    glfw.window_hint(glfw::WindowHint::Floating(true));
+
     let (mut window, events) = glfw
         .create_window(300, 300, "", glfw::WindowMode::Windowed)
         .expect("Failed to create GLFW Window");
@@ -53,6 +56,9 @@ fn main() {
         }
 
         // Changes and Updates
+        if !window.is_focused() {
+            window.focus();
+        }
 
         // OpenGL Render
 

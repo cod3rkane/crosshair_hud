@@ -8,8 +8,8 @@ use std::ffi::c_void;
 
 use glfw::{Action, Context, Key};
 
-const WINDOW_WIDTH: u32 = 200;
-const WINDOW_HEIGHT: u32 = 140;
+const WINDOW_WIDTH: u32 = 40;
+const WINDOW_HEIGHT: u32 = 40;
 
 fn main() {
     let mut glfw = glfw::init(glfw::FAIL_ON_ERRORS).unwrap();
@@ -27,6 +27,10 @@ fn main() {
 
     // This puts our windows always on top
     glfw.window_hint(glfw::WindowHint::Floating(true));
+    glfw.window_hint(glfw::WindowHint::Focused(false));
+    glfw.window_hint(glfw::WindowHint::FocusOnShow(false));
+    glfw.window_hint(glfw::WindowHint::CenterCursor(false));
+    glfw.window_hint(glfw::WindowHint::ClientApi(glfw::ClientApiHint::OpenGl));
 
     let (mut window, events) = glfw
         .create_window(WINDOW_WIDTH, WINDOW_HEIGHT, "", glfw::WindowMode::Windowed)
@@ -36,6 +40,11 @@ fn main() {
     window.set_key_polling(true);
     window.set_scroll_polling(true);
     window.set_framebuffer_size_polling(true);
+
+    // window.set_cursor_mode(glfw::CursorMode::Disabled);
+    window.set_cursor_enter_polling(true);
+    window.set_focus_polling(true);
+    window.set_mouse_button_polling(false);
 
     gl::load_with(|name| window.get_proc_address(name) as *const _);
 
@@ -58,9 +67,14 @@ fn main() {
     let default_buffer = engine::buffer::Buffer::new();
     let default_texture = engine::texture::Texture::new();
 
-    let vertices: Vec<f32> = vec![
-        0.5, 0.5, 0.0, 0.5, -0.5, 0.0, -0.5, -0.5, 0.0, -0.5, 0.5, 0.0,
+    let mut vertices: Vec<f32> = vec![
+        1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0, -1.0, 1.0, 0.0,
     ];
+    const SCALE: f32 = 0.2;
+    vertices = vertices.iter().map(|e| e * SCALE).collect();
+    // let vertices: Vec<f32> = vec![
+    //     0.05, 0.05, 0.0, 0.05, -0.05, 0.0, -0.05, -0.05, 0.0, -0.05, 0.05, 0.0,
+    // ];
     let indices = vec![0, 1, 3, 1, 2, 3];
     let texture_coord: Vec<f32> = vec![1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0];
 
@@ -87,7 +101,7 @@ fn main() {
         gl::STATIC_DRAW,
     );
 
-    let mut default_crosshair = image::open("assets/face.png").unwrap();
+    let mut default_crosshair = image::open("assets/test.png").unwrap();
     default_crosshair = default_crosshair.flipv();
 
     default_texture.bind();
@@ -109,7 +123,7 @@ fn main() {
 
             // gl::ClearColor(0.1, 0.3, 0.5, 1.0);
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-            // gl::Clear(gl::DEPTH_TEST);
+            gl::Clear(gl::DEPTH_TEST);
             gl::Enable(gl::DEPTH_TEST);
             gl::Enable(gl::BLEND);
             gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
@@ -150,6 +164,14 @@ fn handle_window_event(window: &mut glfw::Window, event: glfw::WindowEvent) {
     match event {
         glfw::WindowEvent::Key(Key::Escape, _, Action::Press, _) => {
             window.set_should_close(true);
+        }
+        glfw::WindowEvent::CursorEnter(_) => {
+            println!("nois que voa");
+            window.set_cursor_pos((WINDOW_WIDTH + 40) as f64, WINDOW_HEIGHT as f64);
+        }
+        glfw::WindowEvent::Focus(_) => {
+            println!("here {:?}", window.is_framebuffer_transparent());
+            window.set_cursor_pos((WINDOW_WIDTH + 40) as f64, WINDOW_HEIGHT as f64);
         }
         _ => {}
     }

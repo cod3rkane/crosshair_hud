@@ -45,10 +45,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
+name = "cc"
+version = "1.0.81"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c6b2562119bf28c3439f7f02db99faf0aa1a8cdfe5772a2ee155d32227239f0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
+
+[[package]]
+name = "cmake"
+version = "0.1.50"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a31c789563b815f77f4250caee12365734369f942439b7defd71e18a48197130"
+dependencies = [
+ "cc",
+]
 
 [[package]]
 name = "color_quant"
@@ -113,7 +131,7 @@ name = "crosshair_hud"
 version = "0.1.0"
 dependencies = [
  "gl",
- "glfw",
+ "glfw-passthrough",
  "image",
 ]
 
@@ -233,15 +251,25 @@ dependencies = [
 ]
 
 [[package]]
-name = "glfw"
-version = "0.52.0"
+name = "glfw-passthrough"
+version = "0.51.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "193969ebf8ae47af8c66c38d0cc64dab4868f57f2e7f2b15f5719829748aec51"
+checksum = "b89ad199bb99922313a6e97b609dab23a88e3b68a6b0233d1fafdb5044a7728f"
 dependencies = [
  "bitflags",
+ "glfw-sys-passthrough",
  "objc",
  "raw-window-handle",
  "winapi",
+]
+
+[[package]]
+name = "glfw-sys-passthrough"
+version = "4.0.3+3.3.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "09b2db4d361b9ebe743c3a542ddef5d605269bd1f93e1090440fff075e666ddf"
+dependencies = [
+ "cmake",
 ]
 
 [[package]]

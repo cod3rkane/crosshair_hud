@@ -1,12 +1,12 @@
 extern crate gl;
-extern crate glfw;
 extern crate image;
 
 mod engine;
 
 use std::ffi::c_void;
 
-use glfw::{Action, Context, Key};
+use glfw::{Action, Context, Key, Monitor};
+use glfw_passthrough as glfw;
 
 const WINDOW_WIDTH: u32 = 40;
 const WINDOW_HEIGHT: u32 = 40;
@@ -24,6 +24,7 @@ fn main() {
     // Window Transparency and disable Borders
     glfw.window_hint(glfw::WindowHint::TransparentFramebuffer(true));
     glfw.window_hint(glfw::WindowHint::Decorated(false));
+    glfw.window_hint(glfw::WindowHint::MousePassthrough(true));
 
     // This puts our windows always on top
     glfw.window_hint(glfw::WindowHint::Floating(true));
@@ -48,11 +49,15 @@ fn main() {
 
     gl::load_with(|name| window.get_proc_address(name) as *const _);
 
-    let monitor = glfw::Monitor::from_primary();
-    let mode = glfw::Monitor::get_video_mode(&monitor).unwrap();
+    let monitor = glfw.with_primary_monitor(|_, m| {
+        (
+            m.unwrap().get_video_mode().unwrap().width,
+            m.unwrap().get_video_mode().unwrap().height,
+        )
+    });
 
-    let win_center_x = (mode.width / 2) - (WINDOW_WIDTH / 2);
-    let win_center_y = (mode.height / 2) - (WINDOW_HEIGHT / 2);
+    let win_center_x = (monitor.0 / 2) - (WINDOW_WIDTH / 2);
+    let win_center_y = (monitor.1 / 2) - (WINDOW_HEIGHT / 2);
 
     window.set_pos((win_center_x) as i32, (win_center_y) as i32);
 

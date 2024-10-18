@@ -10,6 +10,7 @@ Runs the app in the development mode.
 Builds the app in prod mode.
 
 Once you run the app, it stays always on top of all windows apps as an overlay, you can click through it normally.
+You can use for your games as crosshair, it simple to add new ones if you know a little bit of coding.
 
 ### Pics
 

@@ -1,11 +1,17 @@
-# crosshair_hud
+# How to Run
+In the Project directory, you can run:
 
-Cod3r's custom Crosshair app
+### `cargo run`
 
-## TODO and Ideas
+Runs the app in the development mode.
 
-we can create a simple statistics with things like clicks, pressed keys, mouse movement etc..
-another nice thing could be show another layer on top when a combo keys are pressed to switch the crosshair or exit the app
+### `cargo build`
 
-we also could add some sort of timer, like create a timer and display on screen, so we can time the reset of monuments e.g for rust
-it'd be nice to also add some tools for this app, useful tools e.g for rust and other games
+Builds the app in prod mode.
+
+Once you run the app, it stays always on top of all windows apps as an overlay, you can click through it normally.
+
+### Pics
+
+![Hud](https://github.com/cod3rkane/crosshair_hud/blob/main/assets/hud.png?raw=true)
+![Hud-1](https://github.com/cod3rkane/crosshair_hud/blob/main/assets/hud-1.png?raw=true)
